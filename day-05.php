@@ -14,11 +14,6 @@ $columns_two = [];
 // For each row...
 foreach( $rows as $row ) {
 
-	// Skip empty row and numerical row
-	if ( empty( $row ) || substr( trim($row), 0, 1 ) === '1' ) {
-		continue;
-	}
-
 	// If a row starts with '[', meaning there are boxes in that row...
 	if ( substr( trim($row), 0, 1 ) === '[' ) {
 
