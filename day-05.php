@@ -19,35 +19,33 @@ foreach( $rows as $row ) {
 
 		// Break apart the row into boxes
 
-		// For testing, we can convert every four spaces into a box '[-]' so it won't show empty, then replace all of the remaining spaces
-		// We can test this with:
-		   // print_r( str_replace( ' ' , '', str_replace( '    ', '[-]', $row ) ) ); echo PHP_EOL;
+		// First, we'll convert every four spaces into a non-character box '[-]', then remove all remaining spaces
+		$row_of_boxes = str_replace(' ', '', str_replace( '    ', '[-]', $row ) );
 
-		// For actual data, we'll replace every four spaces into an empty box
-		// Around that, we'll remove all spaces and the left side of the box (the opening bracket);
-		// Now well use those closing brackets to act as the delimiter for where we want to put this into an array
-		$row_of_boxes = explode( ']', str_replace( ['[', ' '], '', str_replace( '    ', '[]', $row ) ) );
+		// If you'd like to see this for testing, uncomment out the line below
 
+		   // print_r( $row_of_boxes ); echo PHP_EOL;
+
+		// After that, we'll remove all brackets, then break this apart per character
+		// We'll keep the dashes in for structure, but exclude the dashes from going into columns later
+
+		$row_of_box_contents = str_split( str_replace( ['[', ']'], '', $row_of_boxes ) );
+		
 		// Now we'll move them into proper stacks, $columns(_two)
 		// For each row of box...
-		foreach ( $row_of_boxes as $col => $letter ) {
+		foreach ( $row_of_box_contents as $col => $letter ) {
 
-			// Since we set a delimiter of ']', it adds and extra item at the end since it assumed there was something before and after the last bracket
-			// So we'll make sure we only get boxes that are within the total amount of columns
-			if ( ( $col + 1 ) < count( $row_of_boxes ) ) {
+			// If the array doesn't exist, we can't pass anything to it
+			if ( ! array_key_exists( $col + 1, $columns ) ) {
+				$columns[$col + 1] = [];
+				$columns_two[$col + 1] = [];
+			}
 
-				// If the array doesn't exist, we can't pass anything to it
-				if ( ! array_key_exists( $col + 1, $columns ) ) {
-					$columns[$col + 1] = [];
-					$columns_two[$col + 1] = [];
-				}
-
-				// Only add the box to the column if it contains a letter
-				// Since we're going from top to bottom, we need to add boxes to the beginning of the array
-				if ( '' !== $letter ) {
-					array_unshift( $columns[$col + 1], $letter );
-					array_unshift( $columns_two[$col + 1], $letter );
-				}
+			// Only add the box to the column if it contains a letter
+			// Since we're going from top to bottom, we need to add boxes to the beginning of the array
+			if ( '-' !== $letter ) {
+				array_unshift( $columns[$col + 1], $letter );
+				array_unshift( $columns_two[$col + 1], $letter );
 			}
 		}
 
