@@ -132,7 +132,7 @@ echo 'Combined size of all directories under 100,000 bytes: ' . $sub_100000_tota
  * Part 2 - Getting the smallest directory that is still large enough to free up the amount of space needed to install the update
  * Let's have fun with it!
  * 
- * Note: This is just text, nothing is actually running rf -rf on your computer!
+ * Note: This is just text, nothing is actually running rm -rf on your computer!
  */
 
 $max_space = 70000000;
@@ -162,11 +162,11 @@ foreach ( $directory_sizes as $pwd => $dir_size ) {
     }
 }
 
-echo 'Fischers-MBP:~ fischfood$ rm -rf ' . $pwd . PHP_EOL;
+echo 'Fischers-MBP:~ fischfood$ rm -rf ' . str_replace( 'root', '', $pwd ) . PHP_EOL;
 echo 'This will permanently delete the directory. Are you sure? [Y/n] y' . PHP_EOL . PHP_EOL;
 echo '/* Part Two */' . PHP_EOL;
-echo 'Deleting ' . $pwd . ' (' . $delete_size . ' bytes)' . PHP_EOL . PHP_EOL;
+echo 'Deleting ' . str_replace( 'root', '', $pwd ) . ' (' . $delete_size . ' bytes)' . PHP_EOL . PHP_EOL;
 echo '.' . PHP_EOL;
 echo '..' . PHP_EOL;
 echo '...' . PHP_EOL . PHP_EOL;
-echo 'Available Space: ' . ( $used_space - $delete_size) . ' bytes' . PHP_EOL ;
+echo 'Available Space: ' . ( $free_space + $delete_size ) . ' bytes' . PHP_EOL ;
